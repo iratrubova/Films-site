@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <!-- //Meta tag Keywords -->
+    <title>Marvel & DC films</title>
+    <link rel="shortcut icon" href="{% static 'icon.png' %}" type="image/png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- //Meta tag Keywords -->
+    <!-- Custom-Files -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <!-- Bootstrap-Core-CSS -->
+    <!--/ Style-CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
+    <!--// Style-CSS -->
+    <!-- font-awesome-icons -->
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+    <!-- //font-awesome-icons -->
+    <!-- /Fonts -->
+    <link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700"
+          rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900"
+          rel="stylesheet">
+    <!-- //Fonts -->
+</head>
+
+<body>
+
+<div id="page" class="page">
+    <div class="main-banner inner bg bg1" id="home">
+        <!-- header -->
+        {% load movie_tag %}
+        <header class="header">
+            <div class="container-fluid px-lg-5">
+                <!-- nav -->
+                <nav class="py-4">
+                    <div id="logo">
+                        <h1><a href="{% url 'movies' %}" class="editContent"
+                               style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(255, 255, 255); font-size: 40px; background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;, sans-serif;">Marvel & DC</a>
+                        </h1>
+                    </div>
+
+                    <label for="drop" class="toggle">☰</label>
+                    <input type="checkbox" id="drop">
+                    <ul class="menu mt-2">
+                        <li class="active"><a href="{% url 'movies' %}">Главная</a></li>
+                        {% if not request.user.is_authenticated %}
+                        <li><a href="{% url 'login' %}"
+                               style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a>
+                        </li>
+                        <li><a href="{% url 'registration' %}"
+                            style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Регистрация</a>
+                     </li>
+                     {% else %}
+                     <li><a href="{% url 'logout' %}"
+                        style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выйти</a>
+                 </li>
+                 {% endif %}
+                    </ul>
+                </nav>
+                <!-- //nav -->
+            </div>
+        </header>
+    </div>
+    <!--//main-content-->
+    <!---->
+    <ol class="breadcrumb editContent">
+        <li class="breadcrumb-item">
+            <a href="index.html" class="editContent"
+               style="outline: none; cursor: inherit;">Главная</a>
+        </li>
+        <li class="breadcrumb-item active editContent" style="outline: none; cursor: inherit;">
+            Страница фильма
+        </li>
+    </ol>
+    <!---->
+    <!-- banner -->
+    <section class="ab-info-main py-md-5 py-4 editContent"
+             style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(33, 37, 41); font-size: 16px; background-color: rgba(0, 0, 0, 0); font-family: Lato, sans-serif;">
+        <div class="container py-md-3">
+            <!-- top Products -->
+            <div class="row">
+                <!-- product left -->
+                <div class="side-bar col-lg-4">
+
+                    <div class="search-bar w3layouts-newsletter">
+                        <h3 class="sear-head editContent" style="outline: none; cursor: inherit;">
+                            Поиск фильма</h3>
+                        <form action="{% url 'search' %}" method="get" class="d-flex editContent"
+                              style="outline: none; cursor: inherit;">
+                            <input type="search" placeholder="Введите название..." name="q"
+                                   class="form-control" required="">
+                            <button type="submit" class="btn1 btn" style="outline: none; cursor: inherit;">
+                                <span
+                                    class="fa fa-search" aria-hidden="true"
+                                    style="outline: none; cursor: inherit;"></span></button>
+                        </form>
+                    </div>
+                    <!--preference -->
+                    <form action="{% url 'filter' %}" method="get">
+                        <div class="left-side my-4">
+                            <h3 class="sear-head editContent" >Жанры</h3>
+                            <ul class="w3layouts-box-list">
+                                {% for genre in view.get_genres %}
+                                <li class="editContent" >
+                                    <input type="checkbox" class="checked" name="genre" value="{{ genre.id }}">
+                                    <span class="span editContent">{{ genre.name }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- // preference -->
+                        <!-- discounts -->
+                       
+                        <div class="left-side">
+                            <h3 class="sear-head editContent" >Год</h3>
+                            <ul class="w3layouts-box-list">
+                                {% for movie in view.get_years %}
+                                <li class="editContent" >
+                                    <input type="checkbox" class="checked" name="year" value="{{ movie.year }}">
+                                    <span class="span editContent" >{{ movie.year }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button class="btn-find" type="submit">Найти</button>
+                    </form>
+                    <!-- //discounts -->
+                    <!-- reviews -->
+                    <!-- //reviews -->
+                    <!-- deals -->
+                    {% get_last_movies count=2 %}
+                    <!-- //deals -->
+                    <!-- //deals -->
+
+                </div>
+                <!-- //product left -->
+                <!-- product right -->
+                <div class="left-ads-display col-lg-8">
+                    <div class="row">
+                        <div class="desc1-left col-md-6">
+                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="desc1-right col-md-6 pl-lg-4">
+                            <h3 class="editContent" style="outline: none; cursor: inherit;">
+                                {{ movie.title_more }}</h3>
+                            <h5 class="editContent"></h5>
+                            <ul>
+                                <li style="list-style: none; color:#8c9398"><span><b>Год:</b> {{ movie.year }}</span></li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Страна:</b> {{ movie.country }}</span>
+                                </li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Слоган:</b> {{ movie.tagline }}</span>
+                                </li>
+                                <li style="list-style: none; color:#8c9398">
+                                    <span><b>Режиссер:</b> 
+                                        {% for director in movie.directors.all %}
+                                        <a href="{{ director.get_absolute_url }}">
+                                        {{ director.name }}
+                                    </a>
+                                        {% endfor %}
+                                    </span></li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Актеры:</b>  
+                                    {% for actor in movie.actors.all %}
+                                    <a href="{{ actor.get_absolute_url }}">
+                                    {{ actor.name }}
+                                    </a>
+                                    {% endfor %}</span></li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Жанр:</b> 
+                                {% for genre in movie.genres.all %}
+                                {{ genre.name }}
+                                {% endfor %}
+                                </span>
+                                </li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Премьера в мире:</b> {{ movie.world_premier }}</span>
+                                </li>
+                                <li style="list-style: none; color:#8c9398">
+                                    <span><b>Бюджет:</b> ${{ movie.budget }}</span></li>
+                                <li style="list-style: none; color:#8c9398">
+                                    <span><b>Сборы в США:</b> ${{ fees_in_usa }}</span></li>
+                                <li style="list-style: none; color:#8c9398"><span><b>Сборы в мире:</b> ${{ fees_in_world }}</span>
+                                </li>
+                                <div class="share-desc">
+                                    <div class="clearfix"></div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row sub-para-w3layouts mt-5">
+                  
+
+                        <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">
+                            О фильме {{ movie.title_more }}</h3>
+                        <p>
+                            
+                            {% for image in movie.movieshots_set.all %}
+                            <img src="{{ image.image.url }}" class="img-movie-shots" id="image" tabindex='0' alt="{{ image.description }}">
+                            {% endfor %}
+                        </p>
+                        <p class="editContent" style="outline: none; cursor: inherit;">{{ movie.description| safe }}</p>
+                        <p class="mt-3 editContent" style="outline: none; cursor: inherit;">
+                           
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                            <!-- contact form grid -->
+                            <div class="contact-single">
+                                <h3 class="editContent" style="outline: none; cursor: inherit;">
+                                    <span class="sub-tittle editContent"
+                                          style="outline: none; cursor: inherit; color: #8c9398">{{ movie.reviews_set.count }}</span>Оставить отзыв</h3>
+                                <form action="{% url 'add_review' movie.id %}" method="post" class="mt-4" id="formReview">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="parent" id="contactparent" value="">
+                                    <div class="form-group editContent"
+                                         style="outline: none; cursor: inherit;">
+                                        <label for="contactcomment" class="editContent"
+                                               style="outline: none; cursor: inherit; color: #8c9398">Ваш комментарий*</label>
+                                        <textarea class="form-control border" rows="5" name="text"
+                                                  id="contactcomment" required=""></textarea>
+                                    </div>
+                                    <div class="d-sm-flex">
+                                        <div class="col-sm-6 form-group p-0 editContent"
+                                             style="outline: none; cursor: inherit;">
+                                            <label for="contactusername" class="editContent" 
+                                                   style="outline: none; cursor: inherit; color: #8c9398">Имя*</label>
+                                            <input type="text" class="form-control border" name="name"
+                                                   id="contactusername" required="">
+                                        </div>
+                                        <div class="col-sm-6 form-group ml-sm-3 editContent"
+                                             style="outline: none; cursor: inherit;">
+                                            <label for="contactemail" class="editContent"
+                                                   style="outline: none; cursor: inherit; color: #8c9398">Email*</label>
+                                            <input type="email" class="form-control border" name="email"
+                                                   id="contactemail" required="">
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                            class="mt-3 btn btn-success btn-block py-3"
+                                            style="outline: none; cursor: pointer; background-color: rgb(201, 8, 8); border: none">Отправить
+                                    </button>
+                                </form>
+                            </div>
+                            <!--  //contact form grid ends here -->
+                        </div>
+
+                        {% for reviews in movie.get_review %}
+                        <div class="media py-5">
+                            <img src="{% static 'images/te2.jpg' %}" class="mr-3 img-fluid" alt="image"
+                                 style="outline: none; cursor: inherit;">
+                            <div class="media-body mt-4">
+                                <h5 class="mt-0 editContent"
+                                    style="outline: none; cursor: inherit;">{{ reviews.name }}</h5>
+                                <p class="mt-2 editContent" style="outline: none; cursor: inherit;">
+                                    {{ reviews.text }}
+                                </p>
+                                <a href="#formReview" onclick="addReview('{{ reviews.name }}', '{{ reviews.id }}')">Ответить</a>
+
+                                {% for rew in reviews.reviews_set.all %}
+                                <div class="media mt-5 editContent"
+                                     style="outline: none; cursor: inherit;">
+                                    <a class="pr-3" href="#">
+                                        <img src="{% static 'images/te1.jpg' %}" class="img-fluid "
+                                             alt="image" style="outline: none; cursor: inherit;">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="mt-0 editContent"
+                                            style="outline: none; cursor: inherit;">{{ rew.name }}</h5>
+                                        <p class="mt-2 editContent"
+                                           style="outline: none; cursor: inherit;"> {{ rew.text }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                
+                <script>
+                    function addReview(name, id){
+                        document.getElementById("contactparent").value = id;
+                        document.getElementById("contactcomment").innerText = `${name},`
+                    }
+                </script>
+            </div>
+        </div>
+    </section>
+    <!-- //contact -->
+    <!-- footer -->
+    <!-- //footer -->
+    <hr style="background-color: #fff;">
+    <div class="cpy-right py-3">
+        <div class="container">
+            <div class="row">
+                <p class="col-md-10 text-left">© 2021 All rights reserved
+                </p>
+                <!-- move top icon -->
+                <a href="#home" class="move-top text-right col-md-2"><span
+                        class="fa fa-long-arrow-up" aria-hidden="true"
+                        style="outline: none; cursor: inherit;"></span></a>
+                <!-- //move top icon -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>

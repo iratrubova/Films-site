@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин музыки</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
+    
+</head>
+<body>
+  <div id="page" class="page">
+    <div class="main-banner inner bg bg1" id="home">
+        <!-- header -->
+        {% load movie_tag %}
+        <header class="header">
+            <div class="container-fluid px-lg-5">
+                <!-- nav -->
+                <nav class="py-4">
+                    <div id="logo">
+                        <h1 style="padding-left: 20px;"><a href="index.html" class="editContent"
+                               style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(255, 255, 255); font-size: 40px; background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;, sans-serif;">Marvel & DC</a>
+                        </h1>
+                    </div>
+
+                    <label for="drop" class="toggle">☰</label>
+                    <input type="checkbox" id="drop">
+                    <ul class="menu mt-2">
+                        <li class="active"  style="padding-top: 10px;"><a href="/">Главная</a></li>
+                        {% if not request.user.is_authenticated %}
+                        <li  style="padding-top: 10px;"><a href="{% url 'login' %}"
+                               style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a>
+                        </li>
+                        <li  style="padding-top: 10px;"><a href="{% url 'registration' %}"
+                            style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Регистрация</a>
+                     </li>
+                     {% else %}
+                     <li  style="padding-top: 10px;"><a href="{% url 'logout' %}"
+                        style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выйти</a>
+                 </li>
+                 {% endif %}
+                    </ul>
+                </nav>
+                <!-- //nav -->
+            </div>
+        </header>
+    </div>
+    </div>
+
+
+
+{% block content %}
+{% endblock content %}
+
+
+
+
+<script src="{% static 'css/main.js' %}"></script>
+</body>
+</html>

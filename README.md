@@ -1,2 +1,0 @@
-# Films-site
-Site django
